@@ -12,7 +12,8 @@ Product.init(
         },
         lot_number: {
             type: DataTypes.STRING(100),
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         name: {
             type: DataTypes.STRING(250),

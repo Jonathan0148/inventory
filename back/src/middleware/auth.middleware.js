@@ -5,7 +5,7 @@ const checkAuth = async (req, res, next) => {
         return res.status(400).json({
             ok: false,
             status: 400,
-            message: "Proporcione token"
+            message: "No autorizado"
         });
     }
     const token = req.headers.authorization.split(' ').pop()
