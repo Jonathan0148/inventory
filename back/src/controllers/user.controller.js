@@ -1,9 +1,9 @@
-const productService = require("../services/product.service");
+const userService = require("../services/user.service");
 
-class ProductController {
+class UserController {
     async findAll(req, res) {
         try {
-            const data = await productService.findAll();
+            const data = await userService.findAll();
             res.status(200).json({
                 ok: true,
                 status: 200,
@@ -14,7 +14,7 @@ class ProductController {
             res.status(500).json({
                 ok: false,
                 status: 500,
-                message: "Error al obtener los productos"
+                message: "Error al obtener los usuarios"
             });
         }
     }
@@ -22,12 +22,12 @@ class ProductController {
     async findOne(req, res) {
         const id = req.params.id;
         try {
-            const data = await productService.findOne(id);
+            const data = await userService.findOne(id);
             if (!data){
                 return res.status(404).json({
                     ok: false,
                     status: 404,
-                    message: `No existe un producto con el ID ${id}`
+                    message: `No existe un usuario con el ID ${id}`
                 });
             }
             res.status(200).json({
@@ -40,14 +40,14 @@ class ProductController {
             res.status(500).json({
                 ok: false,
                 status: 500,
-                message: `Error al obtener producto por ID ${id}`
+                message: `Error al obtener usuario por ID ${id}`
             });
         }
     }
 
     async create(req, res) {
         const data = req.body;
-        if (!data.lot_number || !data.name || !data.price || !data.quantity_available) {
+        if (!data.name || !data.email || !data.password || !data.is_admin) {
             return res.status(400).json({
                 ok: false,
                 status: 400,
@@ -56,19 +56,19 @@ class ProductController {
         }
 
         try {
-            const product = await productService.create(data);
+            const user = await userService.create(data);
             res.status(201).json({
                 ok: true,
                 status: 201,
-                message: "Producto creado exitosamente",
-                body: product
+                message: "Usuario creado exitosamente",
+                body: user
             });
         } catch (err) {
             console.error(err);
             res.status(500).json({
                 ok: false,
                 status: 500,
-                message: "Error al crear el producto"
+                message: "Error al crear usuario"
             });
         }
     }
@@ -78,27 +78,27 @@ class ProductController {
         const data = req.body;
 
         try {
-            const exist = await productService.findOne(id);
+            const exist = await userService.findOne(id);
             if (!exist){
                 return res.status(404).json({
                     ok: false,
                     status: 404,
-                    message: `No existe un producto con el ID ${id}`
+                    message: `No existe un usuario con el ID ${id}`
                 });
             }
-            const product = await productService.update(id, data);
+            const user = await userService.update(id, data);
             res.status(200).json({
                 ok: true,
                 status: 200,
-                message: "Producto actualizado exitosamente",
-                body: product
+                message: "Usuario actualizado exitosamente",
+                body: user
             });
         } catch (err) {
             console.error(err);
             res.status(500).json({
                 ok: false,
                 status: 500,
-                message: "Error al actualizar el producto"
+                message: "Error al actualizar el usuario"
             });
         }
     }
@@ -107,29 +107,29 @@ class ProductController {
         const id = req.params.id;
 
         try {
-            const exist = await productService.findOne(id);
+            const exist = await userService.findOne(id);
             if (!exist){
                 return res.status(404).json({
                     ok: false,
                     status: 404,
-                    message: `No existe un producto con el ID ${id}`
+                    message: `No existe un usuario con el ID ${id}`
                 });
             }
-            await productService.delete(id);
+            await userService.delete(id);
             res.status(200).json({
                 ok: true,
                 status: 200,
-                message: "Producto eliminado exitosamente"
+                message: "Usuario eliminado exitosamente"
             });
         } catch (err) {
             console.error(err);
             res.status(500).json({
                 ok: false,
                 status: 500,
-                message: "Error al eliminar producto"
+                message: "Error al eliminar usuario"
             });
         }
     }
 }
 
-module.exports = new ProductController();
+module.exports = new UserController();
